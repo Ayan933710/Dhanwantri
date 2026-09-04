@@ -1,0 +1,43 @@
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import HeroSection from './components/landing/HeroSection.jsx';
+import FeaturesSection from './components/landing/FeaturesSection.jsx';
+import FooterSection from './components/landing/FooterSection.jsx';
+import DashboardLayout from './components/dashboard/DashboardLayout.jsx';
+import HerdOverviewPage from './components/dashboard/HerdOverviewPage.jsx';
+import SpeciesListPage from './components/dashboard/SpeciesListPage.jsx';
+import AnimalDetailPage from './components/dashboard/AnimalDetailPage.jsx';
+import AnalyticsPage from './components/dashboard/AnalyticsPage.jsx';
+import PredictionsPage from './components/dashboard/PredictionsPage.jsx';
+import HistoryPage from './components/dashboard/HistoryPage.jsx';
+
+function LandingPage() {
+  const navigate = useNavigate();
+  return (
+    <main className="bg-night text-milk">
+      <HeroSection
+        onLogin={() => console.log('open login modal')}
+        onSignup={() => console.log('open signup modal')}
+        onEnterPlatform={() => navigate('/dashboard')}
+      />
+      <FeaturesSection />
+      <FooterSection />
+    </main>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<HerdOverviewPage />} />
+        <Route path="species/:species" element={<SpeciesListPage />} />
+        <Route path="species/:species/:animalId" element={<AnimalDetailPage />} />
+        <Route path="analytics" element={<AnalyticsPage />} />
+        <Route path="predictions" element={<PredictionsPage />} />
+        <Route path="history" element={<HistoryPage />} />
+      </Route>
+    </Routes>
+  );
+}
