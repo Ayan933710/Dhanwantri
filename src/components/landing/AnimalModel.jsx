@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html, useAnimations, useGLTF } from '@react-three/drei';
+import { AnimatePresence, motion } from 'framer-motion';
 import * as THREE from 'three';
 
 /**
@@ -151,14 +152,22 @@ function PrimitiveAnimal({
         <meshStandardMaterial color={cfg.body} roughness={0.7} />
       </mesh>
 
-      {hovered && (
-        <Html position={[0, 1.55, 0]} center distanceFactor={5}>
-          <div className="animal-hover-card">
+      <AnimatePresence>
+        {hovered && (
+          <Html position={[0, 1.55, 0]} center distanceFactor={5}>
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              className="animal-hover-card"
+            >
             <strong>{species}</strong>
             {ANIMAL_DETAILS[species].map((detail) => <span key={detail}>{detail}</span>)}
-          </div>
-        </Html>
-      )}
+            </motion.div>
+          </Html>
+        )}
+      </AnimatePresence>
     </group>
   );
 }
@@ -201,14 +210,22 @@ function AssetAnimal({ species = 'cow', focused = false, ...groupProps }) {
       onPointerOut={() => setHovered(false)}
     >
       <primitive object={normalizedModel} />
-      {hovered && (
-        <Html position={[0, 2.1, 0]} center distanceFactor={5}>
-          <div className="animal-hover-card">
+      <AnimatePresence>
+        {hovered && (
+          <Html position={[0, 2.1, 0]} center distanceFactor={5}>
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              className="animal-hover-card"
+            >
             <strong>{species}</strong>
             {ANIMAL_DETAILS[species].map((detail) => <span key={detail}>{detail}</span>)}
-          </div>
-        </Html>
-      )}
+            </motion.div>
+          </Html>
+        )}
+      </AnimatePresence>
     </group>
   );
 }

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { ContactShadows, Environment } from '@react-three/drei';
+import { ContactShadows, Environment, Sparkles } from '@react-three/drei';
 import AnimalModel from './AnimalModel.jsx';
 import DeviceCollar from './DeviceCollar.jsx';
 import DeviceSmartCup from './DeviceSmartCup.jsx';
@@ -50,10 +50,11 @@ export default function HeroScene() {
       <directionalLight
         position={[3, 5, 2]}
         intensity={1.4}
-        color="#F0C878"
+        color="#BAE6FD"
         castShadow
       />
-      <Environment preset="sunset" />
+      <Environment preset="city" environmentIntensity={1.2} />
+      <Sparkles count={90} color="#0EA5E9" opacity={0.4} scale={10} speed={0.2} size={1.5} />
 
       <group ref={cowRef} position={[0, 0, 0]}>
         <AnimalModel species="cow" focused />

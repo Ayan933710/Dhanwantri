@@ -34,7 +34,7 @@ export default function PredictionsPage() {
               <p className="mt-3 text-sm leading-relaxed text-milk">{r.action}</p>
               <Link
                 to={`/dashboard/species/${animal.species}/${animal.id}`}
-                className="focus-ring mt-3 inline-block text-xs font-medium text-turmeric hover:text-turmeric-soft"
+                className="focus-ring mt-3 inline-block text-xs font-medium text-sky-600 transition-colors hover:text-sky-700"
               >
                 View full animal record →
               </Link>

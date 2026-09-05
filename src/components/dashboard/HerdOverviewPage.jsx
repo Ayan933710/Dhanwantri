@@ -2,44 +2,52 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { HERD, riskColor } from '../../data/herd.js';
 import RiskBadge from './RiskBadge.jsx';
+import InteractiveCard from '../shared/InteractiveCard.jsx';
+
+const cardGroupVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.08 } },
+};
 
 function StatCard({ label, value, sub }) {
   return (
-    <div className="rounded-xl border border-milk/10 bg-night-card/60 p-5">
+    <InteractiveCard className="rounded-xl border border-slate-200 bg-theme-bg-card p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(14,165,233,0.12)]">
       <p className="text-xs text-milk-dim">{label}</p>
       <p className="mt-2 font-display text-3xl text-milk">{value}</p>
       {sub && <p className="mt-1 text-xs text-milk-dim">{sub}</p>}
-    </div>
+    </InteractiveCard>
   );
 }
 
 function HerdCard({ animal }) {
   return (
-    <Link
-      to={`/dashboard/species/${animal.species}/${animal.id}`}
-      className="focus-ring flex min-w-0 flex-col justify-between rounded-xl border border-milk/10 bg-night-card/60 p-4 transition hover:border-turmeric/40"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="font-display text-base text-milk">{animal.name}</p>
-          <p className="text-xs capitalize text-milk-dim">
-            {animal.species} · {animal.id}
-          </p>
+    <InteractiveCard className="rounded-xl">
+      <Link
+        to={`/dashboard/species/${animal.species}/${animal.id}`}
+        className="focus-ring flex min-h-[138px] min-w-0 flex-col justify-between rounded-xl border border-slate-200 bg-theme-bg-card p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-300 hover:bg-sky-50/50 hover:shadow-[0_12px_30px_rgba(14,165,233,0.12)]"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-display text-base text-milk">{animal.name}</p>
+            <p className="text-xs capitalize text-milk-dim">
+              {animal.species} · {animal.id}
+            </p>
+          </div>
+          <div
+            className="grid h-10 w-10 place-items-center rounded-full text-xs font-semibold"
+            style={{
+              color: riskColor[animal.risk],
+              border: `1px solid ${riskColor[animal.risk]}55`,
+            }}
+          >
+            {animal.riskScore}%
+          </div>
         </div>
-        <div
-          className="grid h-10 w-10 place-items-center rounded-full text-xs font-semibold"
-          style={{
-            color: riskColor[animal.risk],
-            border: `1px solid ${riskColor[animal.risk]}55`,
-          }}
-        >
-          {animal.riskScore}%
+        <div className="mt-4">
+          <RiskBadge risk={animal.risk} />
         </div>
-      </div>
-      <div className="mt-4">
-        <RiskBadge risk={animal.risk} />
-      </div>
-    </Link>
+      </Link>
+    </InteractiveCard>
   );
 }
 
@@ -51,7 +59,26 @@ export default function HerdOverviewPage() {
 
   return (
     <div className="space-y-10">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="dashboard-intro">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-pasture">Today in the herd</p>
+          <h1 className="mt-2 font-display text-3xl text-milk md:text-4xl">A clearer day starts with an earlier signal.</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-milk-dim">
+            Live readings from every connected animal, distilled into the care decisions that matter now.
+          </p>
+        </div>
+        <div className="dashboard-intro-mark" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+      </section>
+      <motion.div
+        variants={cardGroupVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
         <StatCard label="Herd size" value={HERD.length} sub="across 3 species" />
         <StatCard
           label="High risk now"
@@ -60,7 +87,7 @@ export default function HerdOverviewPage() {
         />
         <StatCard label="Average risk score" value={`${avgRisk}%`} sub="herd-wide" />
         <StatCard label="Gateway uptime" value="99.4%" sub="last 30 days" />
-      </div>
+      </motion.div>
 
       {/* Live herd review strip */}
       <section>
@@ -68,18 +95,16 @@ export default function HerdOverviewPage() {
           <h2 className="font-display text-xl text-milk">Live Herd Review</h2>
           <span className="text-xs text-milk-dim">Updated moments ago</span>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          variants={cardGroupVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {HERD.map((animal) => (
-            <motion.div
-              key={animal.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35 }}
-            >
-              <HerdCard animal={animal} />
-            </motion.div>
+            <HerdCard key={animal.id} animal={animal} />
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* High risk board */}
@@ -121,7 +146,7 @@ export default function HerdOverviewPage() {
                     <td className="px-4 py-3 text-right">
                       <Link
                         to={`/dashboard/species/${a.species}/${a.id}`}
-                        className="focus-ring text-xs font-medium text-turmeric hover:text-turmeric-soft"
+                        className="focus-ring text-xs font-medium text-sky-600 transition-colors hover:text-sky-700"
                       >
                         View →
                       </Link>

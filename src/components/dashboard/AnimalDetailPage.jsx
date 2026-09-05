@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 import { HERD, RECOMMENDATIONS, riskColor } from '../../data/herd.js';
 import RiskBadge from './RiskBadge.jsx';
 import RotatingAnimal from './RotatingAnimal.jsx';
+import AnimatedChartTooltip, { AnimatedActiveDot } from '../shared/AnimatedChartTooltip.jsx';
 
 export default function AnimalDetailPage() {
   const { species, animalId } = useParams();
@@ -13,7 +14,7 @@ export default function AnimalDetailPage() {
     return (
       <div className="rounded-xl border border-milk/10 bg-night-card/60 p-6 text-sm text-milk-dim">
         Couldn't find that animal.{' '}
-        <Link to={`/dashboard/species/${species}`} className="text-turmeric">
+        <Link to={`/dashboard/species/${species}`} className="text-sky-600 transition-colors hover:text-sky-700">
           Back to {species} list
         </Link>
       </div>
@@ -29,14 +30,14 @@ export default function AnimalDetailPage() {
         ← Back to {species}s
       </Link>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-        <div className="rounded-xl border border-milk/10 bg-night-card/40">
-          <RotatingAnimal species={species} className="h-80 w-full" />
+      <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+        <div className="animal-detail-model-box rounded-xl border border-milk/10 bg-night-card/40">
+          <RotatingAnimal species={species} className="h-full w-full" />
         </div>
 
-        <div>
-          <div className="flex items-start justify-between">
-            <div>
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
               <h2 className="font-display text-3xl text-milk">{animal.name}</h2>
               <p className="text-sm text-milk-dim">
                 {animal.id} · {animal.breed} · Lactation #{animal.lactation}
@@ -45,7 +46,7 @@ export default function AnimalDetailPage() {
             <RiskBadge risk={animal.risk} size="lg" />
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-lg border border-milk/10 bg-night-card/60 p-3 text-center">
               <p className="text-xs text-milk-dim">Risk score</p>
               <p
@@ -86,8 +87,8 @@ export default function AnimalDetailPage() {
           </div>
 
           {recommendation && (
-            <div className="mt-6 rounded-lg border border-turmeric/30 bg-turmeric/10 p-4">
-              <p className="text-xs font-medium text-turmeric">
+            <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <p className="text-xs font-medium text-amber-700">
                 Recommended action · {recommendation.profile}
               </p>
               <p className="mt-1 text-sm text-milk">{recommendation.action}</p>
@@ -102,23 +103,19 @@ export default function AnimalDetailPage() {
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={animal.trend}>
-              <CartesianGrid stroke="#F6F2E71A" vertical={false} />
-              <XAxis dataKey="day" stroke="#CFC9B8" fontSize={11} tickLine={false} />
-              <YAxis stroke="#CFC9B8" fontSize={11} tickLine={false} width={30} />
+              <CartesianGrid stroke="#E2E8F0" vertical={false} />
+              <XAxis dataKey="day" stroke="#64748B" fontSize={11} tickLine={false} />
+              <YAxis stroke="#64748B" fontSize={11} tickLine={false} width={30} />
               <Tooltip
-                contentStyle={{
-                  background: '#1B2B25',
-                  border: '1px solid #F6F2E71A',
-                  borderRadius: 8,
-                  fontSize: 12,
-                }}
+                content={<AnimatedChartTooltip />}
               />
               <Line
                 type="monotone"
                 dataKey="risk"
-                stroke="#E3A23C"
+                stroke="#0EA5E9"
                 strokeWidth={2}
                 dot={false}
+                activeDot={<AnimatedActiveDot />}
               />
             </LineChart>
           </ResponsiveContainer>

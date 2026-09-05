@@ -3,10 +3,10 @@ export const SPECIES = ['cow', 'buffalo', 'goat'];
 export const RISK_LEVELS = ['No Risk', 'Low Risk', 'Moderate Risk', 'High Risk'];
 
 const riskColor = {
-  'No Risk': '#4C8A68',
-  'Low Risk': '#8AB894',
-  'Moderate Risk': '#E3A23C',
-  'High Risk': '#C4553D',
+  'No Risk': '#22C55E',
+  'Low Risk': '#38BDF8',
+  'Moderate Risk': '#F59E0B',
+  'High Risk': '#EF4444',
 };
 export { riskColor };
 

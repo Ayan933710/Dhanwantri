@@ -36,14 +36,14 @@ export default function SpeciesListPage() {
               to={`/dashboard/species/${species}/${a.id}`}
               className="focus-ring block rounded-xl border border-milk/10 bg-night-card/60 p-5 transition hover:border-turmeric/40"
             >
-              <div className="flex items-start justify-between">
-                <div>
+              <div className="flex min-w-0 items-start justify-between gap-3">
+                <div className="min-w-0">
                   <p className="font-display text-lg text-milk">{a.name}</p>
                   <p className="text-xs text-milk-dim">
                     {a.id} · {a.breed}
                   </p>
                 </div>
-                <RiskBadge risk={a.risk} />
+                <span className="shrink-0"><RiskBadge risk={a.risk} /></span>
               </div>
               <dl className="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-milk-dim">
                 <div>

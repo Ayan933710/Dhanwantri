@@ -8,23 +8,23 @@ export default function HeroOverlay() {
         initial={{ y: 16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
-        className="hero-copy max-w-2xl text-left"
+        className="hero-copy max-w-2xl text-left text-theme-text-dark"
       >
-        <div className="hero-eyebrow mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-turmeric-soft">
-          <span className="status-dot" /> Live herd intelligence
+        <div className="hero-eyebrow mb-6 inline-flex items-center gap-2 rounded-full border-sky-200 bg-sky-50/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-sky-700">
+          <span className="status-dot" /> Field signal / 24-7
         </div>
-        <h1 className="font-display text-5xl leading-[0.92] text-milk sm:text-7xl md:text-8xl">
-          See the signal.
-          <span className="hero-title-accent"> Shape what happens next.</span>
+        <h1 className="font-display text-5xl leading-[0.92] text-theme-text-dark sm:text-7xl md:text-8xl">
+          Know sooner.
+          <span className="hero-title-accent"> Care better.</span>
         </h1>
-        <p className="mt-6 max-w-md text-sm leading-7 text-milk-dim md:text-base">
-          A connected intelligence layer for healthier animals, calmer decisions and a clearer view of every day in the shed.
+        <p className="mt-6 max-w-md text-sm leading-7 text-theme-text-muted md:text-base">
+          DairyGuard turns the quietest changes in behaviour and milk chemistry into a clear care window for every animal.
         </p>
         <div className="pointer-events-auto mt-8 flex flex-wrap items-center gap-3">
-          <a href="#features" className="hero-primary-button">
+          <a href="#features" className="hero-primary-button hover:scale-[1.03] active:scale-[0.98]">
             Explore the system <ArrowDownRight size={17} />
           </a>
-          <span className="hero-secondary-note"><Play size={12} fill="currentColor" /> Live from animal to alert</span>
+          <span className="hero-secondary-note"><Play size={12} fill="currentColor" /> Animal to alert, connected</span>
         </div>
       </motion.div>
 
@@ -46,9 +46,9 @@ export default function HeroOverlay() {
         transition={{ duration: 0.8, delay: 1 }}
         className="hero-metric-card hero-card-two"
       >
-        <div className="flex items-center gap-2 text-xs text-milk"><ShieldCheck size={15} className="text-pasture-light" /> Early care window</div>
-        <p className="mt-2 font-display text-2xl text-milk">7–14 days</p>
-        <span className="text-[10px] text-milk-dim/70">before symptoms surface</span>
+        <div className="flex items-center gap-2 text-xs text-theme-text-dark"><ShieldCheck size={15} className="text-theme-risk-none" /> Early care window</div>
+        <p className="mt-2 font-display text-2xl text-theme-text-dark">7–14 days</p>
+        <span className="text-[10px] text-theme-text-muted">before symptoms surface</span>
       </motion.div>
 
       <motion.div
@@ -57,7 +57,7 @@ export default function HeroOverlay() {
         transition={{ duration: 0.8, delay: 1.2 }}
         className="hero-annotation"
       >
-        <Sparkles size={14} className="text-turmeric" />
+        <Sparkles size={14} className="text-sky-600" />
         <span>One connected view<br /><b>for the whole herd</b></span>
         <ArrowUpRight size={15} />
       </motion.div>

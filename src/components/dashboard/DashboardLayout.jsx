@@ -1,36 +1,53 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   AlertTriangle,
+  ChevronDown,
+  Home,
   PawPrint,
   LineChart,
-  ClipboardList,
   History,
 } from 'lucide-react';
+import AmbientBackground from '../shared/AmbientBackground.jsx';
 
 const NAV_ITEMS = [
+  { to: '/', label: 'Main Page', icon: Home, end: true },
   { to: '/dashboard', label: 'Herd Overview', icon: LayoutDashboard, end: true },
-  { to: '/dashboard/species/cow', label: 'Cows', icon: PawPrint },
-  { to: '/dashboard/species/buffalo', label: 'Buffaloes', icon: PawPrint },
-  { to: '/dashboard/species/goat', label: 'Goats', icon: PawPrint },
   { to: '/dashboard/analytics', label: 'Analytics', icon: LineChart },
   { to: '/dashboard/predictions', label: 'Predictions', icon: AlertTriangle },
   { to: '/dashboard/history', label: 'History', icon: History },
 ];
 
+const ANIMAL_ITEMS = [
+  { to: '/dashboard/species/cow', label: 'Cows' },
+  { to: '/dashboard/species/goat', label: 'Goats' },
+  { to: '/dashboard/species/buffalo', label: 'Buffaloes' },
+];
+
 export default function DashboardLayout() {
+  const { pathname } = useLocation();
+  const animalsActive = pathname.startsWith('/dashboard/species/');
+  const [animalsOpen, setAnimalsOpen] = useState(animalsActive);
+
+  useEffect(() => {
+    if (animalsActive) setAnimalsOpen(true);
+  }, [animalsActive]);
+
   return (
-    <div className="flex min-h-screen bg-night text-milk">
-      <aside className="hidden w-60 shrink-0 border-r border-milk/10 bg-night-soft px-4 py-6 md:block">
+    <div className="relative flex min-h-screen isolate bg-theme-bg-main text-theme-text-dark">
+      <AmbientBackground variant="dashboard" />
+      <div className="dashboard-background-mesh" aria-hidden="true" />
+      <aside className="relative z-10 dashboard-sidebar hidden w-60 shrink-0 border-r border-slate-200 bg-theme-bg-card px-4 py-6 shadow-sm md:block">
         <div className="flex items-center gap-2 px-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-turmeric" />
-          <span className="font-display text-base text-milk">
-            DairyGuard <span className="text-turmeric">AI</span>
+          <span className="h-2.5 w-2.5 rounded-full bg-theme-primary" />
+          <span className="font-display text-base text-theme-text-dark">
+            DairyGuard <span className="text-theme-primary">AI</span>
           </span>
         </div>
 
         <nav className="mt-8 space-y-1">
-          {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
+          {NAV_ITEMS.slice(0, 2).map(({ to, label, icon: Icon, end }) => (
             <NavLink
               key={to}
               to={to}
@@ -38,8 +55,65 @@ export default function DashboardLayout() {
               className={({ isActive }) =>
                 `focus-ring flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
                   isActive
-                    ? 'bg-turmeric/15 text-turmeric'
-                    : 'text-milk-dim hover:bg-milk/5 hover:text-milk'
+                      ? 'bg-sky-50 text-theme-primary'
+                    : 'text-theme-text-muted hover:bg-slate-50 hover:text-theme-text-dark'
+                }`
+              }
+            >
+              <Icon size={16} />
+              {label}
+            </NavLink>
+          ))}
+
+          <div className="pt-2">
+            <button
+              type="button"
+              aria-expanded={animalsOpen}
+              onClick={() => setAnimalsOpen((isOpen) => !isOpen)}
+              className={`focus-ring flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
+                animalsActive ? 'text-theme-primary' : 'text-theme-text-muted'
+              }`}
+            >
+              <span className="flex items-center gap-3">
+                <PawPrint size={16} />
+                <span>Animals</span>
+              </span>
+              <ChevronDown
+                size={15}
+                className={`transition-transform ${animalsOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {animalsOpen && (
+              <div className="ml-4 space-y-1 border-l border-slate-200 pl-3">
+                {ANIMAL_ITEMS.map(({ to, label }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    className={({ isActive }) =>
+                      `focus-ring block rounded-lg px-3 py-2 text-sm transition ${
+                        isActive
+                          ? 'bg-sky-50 text-theme-primary'
+                          : 'text-theme-text-muted hover:bg-slate-50 hover:text-theme-text-dark'
+                      }`
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {NAV_ITEMS.slice(2).map(({ to, label, icon: Icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                `focus-ring flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
+                  isActive
+                    ? 'bg-sky-50 text-theme-primary'
+                    : 'text-theme-text-muted hover:bg-sky-50/70 hover:text-theme-text-dark'
                 }`
               }
             >
@@ -49,27 +123,27 @@ export default function DashboardLayout() {
           ))}
         </nav>
 
-        <div className="mt-10 rounded-lg border border-milk/10 bg-night-card/60 p-3">
-          <p className="text-[11px] text-milk-dim">
+        <div className="mt-10 rounded-lg border border-slate-200 bg-theme-bg-card p-3 shadow-sm">
+          <p className="text-[11px] text-theme-text-muted">
             Prototype data — for demo purposes. Not a certified diagnostic
             output.
           </p>
         </div>
       </aside>
 
-      <div className="min-w-0 flex-1">
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-milk/10 px-4 py-4 sm:px-6 md:px-8">
-          <div>
-            <p className="text-xs text-milk-dim">Kolar Village Milk Cooperative</p>
-            <p className="font-display text-lg text-milk">Herd Health Console</p>
+      <div className="relative z-10 min-w-0 flex-1">
+        <header className="dashboard-topbar flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-theme-bg-card px-4 py-4 shadow-sm sm:px-6 md:px-8">
+          <div className="min-w-0">
+            <p className="dashboard-kicker text-xs text-theme-text-muted">Kolar Village / milk cooperative</p>
+            <p className="truncate font-display text-lg text-theme-text-dark">Herd Health Console</p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-milk-dim">
-            <span className="h-2 w-2 rounded-full bg-pasture-light" />
-            Gateway online
+          <div className="dashboard-status flex shrink-0 items-center gap-2 text-xs text-theme-text-muted">
+            <span className="h-2 w-2 rounded-full bg-theme-risk-none" />
+            Gateway online · 99.4% uptime
           </div>
         </header>
 
-        <main className="min-w-0 px-4 py-6 sm:px-6 sm:py-8 md:px-8">
+        <main className="dashboard-main min-w-0 px-4 py-6 sm:px-6 sm:py-8 md:px-8">
           <Outlet />
         </main>
       </div>

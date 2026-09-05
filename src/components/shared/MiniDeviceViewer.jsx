@@ -2,6 +2,7 @@ import { Suspense, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, OrbitControls, Environment, ContactShadows, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { AnimatePresence } from 'framer-motion';
 import DeviceTooltip from '../landing/DeviceTooltip.jsx';
 import { DEVICES } from '../../data/devices.js';
 
@@ -10,7 +11,7 @@ function CollarMesh({ hovered }) {
     <group rotation={[0.15, 0, 0]}>
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.55, 0.1, 12, 32]} />
-        <meshStandardMaterial color={hovered ? '#E3A23C' : '#233A2F'} emissive={hovered ? '#5c3d10' : '#000000'} roughness={0.4} metalness={0.35} />
+        <meshStandardMaterial color={hovered ? '#0EA5E9' : '#233A2F'} emissive={hovered ? '#0369A1' : '#000000'} roughness={0.4} metalness={0.35} />
       </mesh>
       <mesh position={[0.45, -0.12, 0.1]}>
         <boxGeometry args={[0.26, 0.2, 0.14]} />
@@ -29,7 +30,7 @@ function CupMesh({ hovered }) {
     <group>
       <mesh>
         <cylinderGeometry args={[0.34, 0.28, 0.5, 24]} />
-        <meshStandardMaterial color={hovered ? '#F0C878' : '#F6F2E7'} roughness={0.35} />
+        <meshStandardMaterial color={hovered ? '#38BDF8' : '#F6F2E7'} roughness={0.35} />
       </mesh>
       <mesh position={[0, 0.16, 0.31]}>
         <boxGeometry args={[0.24, 0.15, 0.02]} />
@@ -48,7 +49,7 @@ function HubMesh({ hovered }) {
     <group>
       <mesh>
         <boxGeometry args={[0.82, 0.58, 0.3]} />
-        <meshStandardMaterial color={hovered ? '#E3A23C' : '#233A2F'} roughness={0.38} metalness={0.18} />
+        <meshStandardMaterial color={hovered ? '#0EA5E9' : '#233A2F'} roughness={0.38} metalness={0.18} />
       </mesh>
       <mesh position={[0, 0.03, 0.16]}>
         <boxGeometry args={[0.42, 0.16, 0.018]} />
@@ -60,7 +61,7 @@ function HubMesh({ hovered }) {
       </mesh>
       <mesh position={[-0.18, -0.18, 0.16]}>
         <sphereGeometry args={[0.025, 10, 10]} />
-        <meshStandardMaterial color="#E3A23C" emissive="#E3A23C" emissiveIntensity={1.5} />
+        <meshStandardMaterial color="#0EA5E9" emissive="#0EA5E9" emissiveIntensity={1.5} />
       </mesh>
       <mesh position={[0.28, 0.42, 0]}>
         <cylinderGeometry args={[0.025, 0.025, 0.34, 10]} />
@@ -88,7 +89,9 @@ function InteractiveDevice({ type }) {
       scale={hovered ? 1.12 : 1}
     >
       {type === 'collar' ? <CollarMesh hovered={hovered} /> : type === 'cup' ? <CupMesh hovered={hovered} /> : <HubMesh hovered={hovered} />}
-      {hovered && <Html position={[0.72, 0.35, 0]} distanceFactor={8} transform={false} className="device-tooltip-anchor"><DeviceTooltip device={DEVICES[type]} compact /></Html>}
+      <AnimatePresence>
+        {hovered && <Html position={[0.72, 0.35, 0]} distanceFactor={8} transform={false} className="device-tooltip-anchor"><DeviceTooltip device={DEVICES[type]} compact /></Html>}
+      </AnimatePresence>
     </group>
   );
 }
@@ -99,8 +102,8 @@ export default function MiniDeviceViewer({ type }) {
       <Canvas camera={{ position: [1.4, 0.8, 1.6], fov: 40 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.7} />
-          <directionalLight position={[2, 3, 2]} intensity={1.2} color="#F0C878" />
-          <Environment preset="sunset" />
+          <directionalLight position={[2, 3, 2]} intensity={1.4} color="#BAE6FD" />
+          <Environment preset="city" environmentIntensity={1.2} />
           <Bounds fit clip observe margin={1.25}>
             <InteractiveDevice type={type} />
           </Bounds>

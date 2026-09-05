@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
+import { AnimatePresence } from 'framer-motion';
 import DeviceTooltip from './DeviceTooltip.jsx';
 import { DEVICES } from '../../data/devices.js';
 import { clampRange } from '../../hooks/useScrollProgress.js';
@@ -49,8 +50,8 @@ export default function DeviceCollar({
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.24, 0.045, 10, 24]} />
         <meshStandardMaterial
-          color={hovered ? '#E3A23C' : '#233A2F'}
-          emissive={hovered ? '#5c3d10' : '#000000'}
+          color={hovered ? '#0EA5E9' : '#233A2F'}
+          emissive={hovered ? '#0369A1' : '#000000'}
           roughness={0.4}
           metalness={0.3}
         />
@@ -70,11 +71,13 @@ export default function DeviceCollar({
         />
       </mesh>
 
-      {hovered && (
-        <Html distanceFactor={6} position={[0.3, 0.2, 0]} occlude>
-          <DeviceTooltip device={DEVICES.collar} />
-        </Html>
-      )}
+      <AnimatePresence>
+        {hovered && (
+          <Html distanceFactor={6} position={[0.3, 0.2, 0]} occlude>
+            <DeviceTooltip device={DEVICES.collar} />
+          </Html>
+        )}
+      </AnimatePresence>
     </group>
   );
 }

@@ -13,7 +13,10 @@ import {
   LineChart,
   Line,
 } from 'recharts';
+import { motion } from 'framer-motion';
 import { HERD, RISK_LEVELS, riskColor } from '../../data/herd.js';
+import AnimatedChartTooltip, { AnimatedActiveDot } from '../shared/AnimatedChartTooltip.jsx';
+import InteractiveCard from '../shared/InteractiveCard.jsx';
 
 function riskDistribution() {
   return RISK_LEVELS.map((level) => ({
@@ -41,7 +44,11 @@ function herdThiTrend() {
   }));
 }
 
-const CARD = 'rounded-xl border border-milk/10 bg-night-card/60 p-5';
+const CARD = 'rounded-xl border border-slate-200 bg-theme-bg-card p-5 shadow-sm';
+const chartGroupVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.12 } },
+};
 
 export default function AnalyticsPage() {
   const dist = riskDistribution();
@@ -51,13 +58,18 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-2xl text-milk">Analytics</h2>
-        <p className="mt-1 text-sm text-milk-dim">Herd-wide trends across all connected devices.</p>
+        <h2 className="font-display text-2xl text-theme-text-dark">Analytics</h2>
+        <p className="mt-1 text-sm text-theme-text-muted">Herd-wide trends across all connected devices.</p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className={`${CARD} min-w-0`}>
-          <p className="mb-4 font-display text-lg text-milk">Risk distribution</p>
+      <motion.div
+        variants={chartGroupVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid gap-6 lg:grid-cols-2"
+      >
+        <InteractiveCard className={`${CARD} min-w-0`}>
+          <p className="mb-4 font-display text-lg text-theme-text-dark">Risk distribution</p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -74,66 +86,58 @@ export default function AnalyticsPage() {
                   ))}
                 </Pie>
                 <Legend
-                  wrapperStyle={{ fontSize: 12, color: '#CFC9B8' }}
-                  formatter={(v) => <span style={{ color: '#CFC9B8' }}>{v}</span>}
+                  wrapperStyle={{ fontSize: 12, color: '#64748B' }}
+                  formatter={(v) => <span style={{ color: '#64748B' }}>{v}</span>}
                 />
                 <Tooltip
-                  contentStyle={{
-                    background: '#1B2B25',
-                    border: '1px solid #F6F2E71A',
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
+                  content={<AnimatedChartTooltip />}
                 />
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </InteractiveCard>
 
-        <div className={`${CARD} min-w-0`}>
-          <p className="mb-4 font-display text-lg text-milk">Average risk by species</p>
+        <InteractiveCard className={`${CARD} min-w-0`}>
+          <p className="mb-4 font-display text-lg text-theme-text-dark">Average risk by species</p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={speciesAvg}>
-                <CartesianGrid stroke="#F6F2E71A" vertical={false} />
-                <XAxis dataKey="species" stroke="#CFC9B8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#CFC9B8" fontSize={12} tickLine={false} width={30} />
+                <CartesianGrid stroke="#E2E8F0" vertical={false} />
+                <XAxis dataKey="species" stroke="#64748B" fontSize={12} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={12} tickLine={false} width={30} />
                 <Tooltip
-                  contentStyle={{
-                    background: '#1B2B25',
-                    border: '1px solid #F6F2E71A',
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
+                  content={<AnimatedChartTooltip />}
                 />
-                <Bar dataKey="avgRisk" radius={[6, 6, 0, 0]} fill="#E3A23C" />
+                <Bar dataKey="avgRisk" radius={[6, 6, 0, 0]} fill="#0EA5E9" />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </InteractiveCard>
 
-        <div className={`${CARD} min-w-0 lg:col-span-2`}>
-          <p className="mb-4 font-display text-lg text-milk">Shed Temperature-Humidity Index (THI)</p>
+        <InteractiveCard className={`${CARD} min-w-0 lg:col-span-2`}>
+          <p className="mb-4 font-display text-lg text-theme-text-dark">Shed Temperature-Humidity Index (THI)</p>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={thi}>
-                <CartesianGrid stroke="#F6F2E71A" vertical={false} />
-                <XAxis dataKey="day" stroke="#CFC9B8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#CFC9B8" fontSize={12} tickLine={false} width={30} />
+                <CartesianGrid stroke="#E2E8F0" vertical={false} />
+                <XAxis dataKey="day" stroke="#64748B" fontSize={12} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={12} tickLine={false} width={30} />
                 <Tooltip
-                  contentStyle={{
-                    background: '#1B2B25',
-                    border: '1px solid #F6F2E71A',
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
+                  content={<AnimatedChartTooltip />}
                 />
-                <Line type="monotone" dataKey="thi" stroke="#4C8A68" strokeWidth={2} dot={false} />
+                <Line
+                  type="monotone"
+                  dataKey="thi"
+                  stroke="#0EA5E9"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={<AnimatedActiveDot />}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </div>
-      </div>
+        </InteractiveCard>
+      </motion.div>
     </div>
   );
 }

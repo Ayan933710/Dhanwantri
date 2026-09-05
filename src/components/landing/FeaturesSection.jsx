@@ -12,14 +12,16 @@ function PartRow({ part }) {
   return (
     <motion.div
       variants={fadeUp}
-      className="feature-signal-row flex gap-4 rounded-lg border border-milk/10 bg-night-card/60 p-4"
+      whileHover={{ y: -8, scale: 1.015 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 24 }}
+      className="feature-signal-row flex gap-4 rounded-lg border border-slate-200 bg-theme-bg-card p-4 shadow-sm"
     >
-      <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-turmeric" />
+      <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-sky-500 shadow-[0_0_12px_rgba(14,165,233,0.45)]" />
       <div>
-        <p className="font-display text-sm text-milk">
-          {part.name} <span className="text-milk-dim">· {part.role}</span>
+        <p className="font-display text-sm text-theme-text-dark">
+          {part.name} <span className="text-theme-text-muted">· {part.role}</span>
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-milk-dim">{part.detail}</p>
+        <p className="mt-1 text-sm leading-relaxed text-theme-text-muted">{part.detail}</p>
       </div>
     </motion.div>
   );
@@ -45,10 +47,15 @@ function DevicePanel({ title, subtitle, viewerType, parts }) {
           <p className="mt-2 max-w-lg text-sm leading-6 text-milk-dim">{subtitle}</p>
           <div className="device-flow" aria-label={`${title} signal flow`}>
             {flow.map((step, stepIndex) => (
-              <div key={step} className="device-flow-step">
-                <span>0{stepIndex + 1}</span>
+              <motion.div
+                key={step}
+                whileHover={{ x: 5, scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 24 }}
+                className="device-flow-step rounded-r-md transition-colors hover:bg-sky-50/70"
+              >
+                <span className="text-sky-600">0{stepIndex + 1}</span>
                 <p>{step}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -109,7 +116,7 @@ export default function FeaturesSection() {
   const selected = devices[activeDevice];
 
   return (
-    <section id="features" className="features-stage relative overflow-hidden bg-night px-6 py-24 md:px-12">
+    <section id="features" className="relative z-10 features-stage landing-features overflow-hidden bg-theme-bg-main px-6 py-24 md:px-12">
       <motion.div
         initial="hidden"
         whileInView="show"
@@ -117,16 +124,15 @@ export default function FeaturesSection() {
         variants={fadeUp}
         className="mx-auto max-w-2xl text-center"
       >
-        <p className="text-xs tracking-wide text-turmeric-soft">Features &amp; Working</p>
-        <h2 className="mt-3 font-display text-3xl text-milk md:text-4xl">
-          Three devices. One connected forecast.
+        <h2 className="font-display text-3xl text-theme-text-dark md:text-4xl">
+          Three signals. One calmer day.
         </h2>
-        <p className="mt-3 text-sm text-milk-dim">
+        <p className="mt-3 text-sm text-theme-text-muted">
           Every signal has a place: on the animal, at milking time and at the gateway.
         </p>
       </motion.div>
 
-      <div className="device-switcher mx-auto mt-12 max-w-5xl" role="tablist" aria-label="DairyGuard devices">
+      <div className="device-switcher mx-auto mt-8 max-w-5xl" role="tablist" aria-label="DairyGuard devices">
         {Object.entries(devices).map(([key, device], index) => (
           <button
             key={key}
@@ -163,7 +169,7 @@ export default function FeaturesSection() {
       >
         <motion.h1
           variants={fadeUp}
-          className="workflow-heading text-center font-display text-milk"
+          className="workflow-heading text-center font-display text-theme-text-dark"
         >
           From teat to alert, in five steps
         </motion.h1>
@@ -173,11 +179,13 @@ export default function FeaturesSection() {
             <motion.div
               key={s.step}
               variants={fadeUp}
-              className="feature-step min-h-60 rounded-lg border border-milk/10 bg-night-card/60 p-6"
+              whileHover={{ y: -8, scale: 1.015 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+              className="feature-step min-h-60 rounded-lg border border-slate-200 bg-theme-bg-card p-6 shadow-sm"
             >
-              <span className="font-display text-xl text-turmeric">{s.step}</span>
-              <p className="mt-2 font-display text-sm text-milk">{s.title}</p>
-              <p className="mt-1 text-xs leading-relaxed text-milk-dim">{s.detail}</p>
+              <span className="font-display text-xl text-sky-600">{s.step}</span>
+              <p className="mt-2 font-display text-sm text-theme-text-dark">{s.title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-theme-text-muted">{s.detail}</p>
             </motion.div>
           ))}
         </div>

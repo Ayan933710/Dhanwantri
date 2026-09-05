@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
+import { AnimatePresence } from 'framer-motion';
 import DeviceTooltip from './DeviceTooltip.jsx';
 import { DEVICES } from '../../data/devices.js';
 import { clampRange } from '../../hooks/useScrollProgress.js';
@@ -41,7 +42,7 @@ export default function DeviceSmartCup({
       <mesh>
         <cylinderGeometry args={[0.11, 0.09, 0.16, 16]} />
         <meshStandardMaterial
-          color={hovered ? '#E3A23C' : '#F6F2E7'}
+          color={hovered ? '#0EA5E9' : '#F6F2E7'}
           roughness={0.35}
         />
       </mesh>
@@ -56,11 +57,13 @@ export default function DeviceSmartCup({
         <meshStandardMaterial color="#233A2F" metalness={0.5} roughness={0.4} />
       </mesh>
 
-      {hovered && (
-        <Html distanceFactor={6} position={[0.18, 0.1, 0]} occlude>
-          <DeviceTooltip device={DEVICES.cup} />
-        </Html>
-      )}
+      <AnimatePresence>
+        {hovered && (
+          <Html distanceFactor={6} position={[0.18, 0.1, 0]} occlude>
+            <DeviceTooltip device={DEVICES.cup} />
+          </Html>
+        )}
+      </AnimatePresence>
     </group>
   );
 }

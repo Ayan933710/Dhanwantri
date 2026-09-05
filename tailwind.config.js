@@ -4,37 +4,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        // DairyGuard AI token system — dusk pasture, not the generic cream/terracotta default.
-        night: {
-          DEFAULT: '#0F1A17', // deep pasture-at-dusk background
-          soft: '#16241F',
-          card: '#1B2B25',
-        },
-        pasture: {
-          DEFAULT: '#2F5D46', // grazing-field green
-          light: '#4C8A68',
-        },
-        turmeric: {
-          DEFAULT: '#E3A23C', // turmeric/marigold accent — warm, Indian-agrarian, not clay-orange
-          soft: '#F0C878',
-        },
-        milk: {
-          DEFAULT: '#F6F2E7', // milk-white for high-contrast text on dark
-          dim: '#CFC9B8',
-        },
-        alert: {
-          low: '#4C8A68',
-          moderate: '#E3A23C',
-          high: '#C4553D',
-        },
+        'theme-bg-main': '#FAFAFA',
+        'theme-bg-card': '#FFFFFF',
+        'theme-primary': '#0EA5E9',
+        'theme-text-dark': '#1E293B',
+        'theme-text-muted': '#64748B',
+        'theme-risk-none': '#22C55E',
+        'theme-risk-low': '#38BDF8',
+        'theme-risk-moderate': '#F59E0B',
+        'theme-risk-high': '#EF4444',
+        // Compatibility names for routes that use the original component API.
+        night: { DEFAULT: '#FAFAFA', soft: '#FFFFFF', card: '#FFFFFF' },
+        pasture: { DEFAULT: '#0EA5E9', light: '#22C55E' },
+        turmeric: { DEFAULT: '#0284C7', soft: '#38BDF8' },
+        milk: { DEFAULT: '#1E293B', dim: '#64748B' },
+        alert: { low: '#38BDF8', moderate: '#F59E0B', high: '#EF4444' },
       },
       fontFamily: {
         display: ['"Fraunces"', 'serif'],
         body: ['"Public Sans"', 'sans-serif'],
       },
       backgroundImage: {
-        'dusk-gradient':
-          'radial-gradient(120% 120% at 50% 0%, #1B2B25 0%, #0F1A17 55%, #090F0D 100%)',
+        'fresh-gradient':
+          'linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 55%, #FAFAFA 100%)',
       },
     },
   },

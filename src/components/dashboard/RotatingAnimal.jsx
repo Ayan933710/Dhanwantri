@@ -12,8 +12,8 @@ export default function RotatingAnimal({ species, className = 'h-72 w-full' }) {
       <Canvas shadows camera={{ position: cameraPosition, fov: 42 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.6} />
-          <directionalLight position={[3, 4, 2]} intensity={1.3} color="#F0C878" castShadow />
-          <Environment preset="sunset" />
+          <directionalLight position={[3, 4, 2]} intensity={1.5} color="#BAE6FD" castShadow />
+          <Environment preset="city" environmentIntensity={1.2} />
           <group position={[0, -0.06, 0]} scale={modelScale}>
             <AnimalModel species={species} focused />
           </group>

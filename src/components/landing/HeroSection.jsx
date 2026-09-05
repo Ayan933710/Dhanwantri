@@ -9,7 +9,7 @@ import Navbar from './Navbar.jsx';
  */
 export default function HeroSection({ onLogin, onSignup, onEnterPlatform }) {
   return (
-    <section className="hero-stage hero-video-stage relative min-h-[760px] overflow-hidden">
+    <section className="relative z-10 hero-stage hero-video-stage min-h-[760px] overflow-hidden">
       <video
         className="hero-background-video"
         autoPlay

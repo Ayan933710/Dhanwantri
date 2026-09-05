@@ -13,7 +13,7 @@ export default function HistoryPage() {
           const animal = HERD.find((a) => a.id === h.animalId);
           return (
             <li key={h.id} className="relative">
-              <span className="absolute -left-[29px] top-1.5 h-2.5 w-2.5 rounded-full bg-turmeric" />
+              <span className="absolute -left-[29px] top-1.5 h-2.5 w-2.5 rounded-full bg-theme-primary" />
               <p className="text-xs text-milk-dim">{h.date}</p>
               <p className="mt-1 text-sm text-milk">
                 <span className="font-display">{animal?.name ?? h.animalId}</span> — {h.event}
