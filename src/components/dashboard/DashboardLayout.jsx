@@ -143,6 +143,20 @@ export default function DashboardLayout() {
           </div>
         </header>
 
+        <nav className="dashboard-mobile-nav md:hidden" aria-label="Dashboard navigation">
+          {NAV_ITEMS.slice(1).map(({ to, label, icon: Icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) => `dashboard-mobile-link ${isActive ? 'is-active' : ''}`}
+            >
+              <Icon size={15} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
         <main className="dashboard-main min-w-0 px-4 py-6 sm:px-6 sm:py-8 md:px-8">
           <Outlet />
         </main>

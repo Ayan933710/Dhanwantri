@@ -13,7 +13,7 @@ export default function HeroOverlay() {
         <div className="hero-eyebrow mb-6 inline-flex items-center gap-2 rounded-full border-sky-200 bg-sky-50/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-sky-700">
           <span className="status-dot" /> Field signal / 24-7
         </div>
-        <h1 className="font-display text-5xl leading-[0.92] text-theme-text-dark sm:text-7xl md:text-8xl">
+        <h1 className="hero-title font-display text-5xl leading-[0.92] sm:text-7xl md:text-8xl">
           Know sooner.
           <span className="hero-title-accent"> Care better.</span>
         </h1>

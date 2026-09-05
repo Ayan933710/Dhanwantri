@@ -11,8 +11,8 @@ export default function Navbar({ onLogin, onSignup, onEnterPlatform }) {
     >
       <div className="flex items-center gap-2">
         <span className="brand-mark"><span /></span>
-        <span className="font-display text-lg tracking-tight text-theme-text-dark">
-          DairyGuard <span className="text-theme-primary">AI</span>
+        <span className="brand-name font-display text-lg tracking-tight">
+          DairyGuard <span className="brand-name-accent">AI</span>
         </span>
       </div>
 

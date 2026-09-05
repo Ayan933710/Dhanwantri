@@ -3,7 +3,7 @@ import { Mail, Github, MapPin } from 'lucide-react';
 
 export default function FooterSection() {
   return (
-    <footer className="relative z-10 border-t border-slate-200 bg-theme-bg-card px-6 py-10 md:px-12">
+    <footer className="landing-footer relative z-10 border-t border-slate-200 px-6 py-10 md:px-12">
       <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

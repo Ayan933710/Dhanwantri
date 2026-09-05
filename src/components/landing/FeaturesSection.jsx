@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import MiniDeviceViewer from '../shared/MiniDeviceViewer.jsx';
+import NeuralWeb from '../shared/NeuralWeb.jsx';
 import { COLLAR_PARTS, CUP_PARTS, HUB_PARTS, WORKFLOW_STEPS } from '../../data/parts.js';
 
 const fadeUp = {
@@ -64,15 +65,7 @@ function DevicePanel({ title, subtitle, viewerType, parts }) {
         <div className="device-stage-halo" />
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }} variants={fadeUp}>
           <div className="device-diagram">
-            <MiniDeviceViewer type={viewerType} />
-            <div className="device-callouts" aria-hidden="true">
-              {callouts.map(([label, detail], index) => (
-                <div key={label} className={`device-callout device-callout-${index + 1}`}>
-                  <span className="device-callout-line" />
-                  <b>{label}</b><small>{detail}</small>
-                </div>
-              ))}
-            </div>
+            <MiniDeviceViewer type={viewerType} callouts={callouts} />
           </div>
         </motion.div>
       </div>
@@ -117,6 +110,7 @@ export default function FeaturesSection() {
 
   return (
     <section id="features" className="relative z-10 features-stage landing-features overflow-hidden bg-theme-bg-main px-6 py-24 md:px-12">
+      <NeuralWeb className="neural-web neural-web-section" />
       <motion.div
         initial="hidden"
         whileInView="show"

@@ -16,7 +16,7 @@ export default function HeroSection({ onLogin, onSignup, onEnterPlatform }) {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
       >
         <source src="/background-video.mp4" type="video/mp4" />

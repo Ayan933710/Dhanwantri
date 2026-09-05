@@ -9,12 +9,18 @@ const cardGroupVariants = {
   visible: { transition: { staggerChildren: 0.1, delayChildren: 0.08 } },
 };
 
-function StatCard({ label, value, sub }) {
+function StatCard({ label, value, sub, to }) {
   return (
-    <InteractiveCard className="rounded-xl border border-slate-200 bg-theme-bg-card p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(14,165,233,0.12)]">
-      <p className="text-xs text-milk-dim">{label}</p>
-      <p className="mt-2 font-display text-3xl text-milk">{value}</p>
-      {sub && <p className="mt-1 text-xs text-milk-dim">{sub}</p>}
+    <InteractiveCard className="rounded-xl">
+      <Link
+        to={to}
+        className="focus-ring block rounded-xl border border-slate-200 bg-theme-bg-card p-5 shadow-sm transition-shadow hover:border-sky-300 hover:shadow-[0_16px_36px_rgba(14,165,233,0.12)]"
+        aria-label={`${label}: ${value}. Open details`}
+      >
+        <p className="text-xs text-milk-dim">{label}</p>
+        <p className="mt-2 font-display text-3xl text-milk">{value}</p>
+        {sub && <p className="mt-1 text-xs text-milk-dim">{sub}</p>}
+      </Link>
     </InteractiveCard>
   );
 }
@@ -79,14 +85,15 @@ export default function HerdOverviewPage() {
         animate="visible"
         className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
       >
-        <StatCard label="Herd size" value={HERD.length} sub="across 3 species" />
+        <StatCard label="Herd size" value={HERD.length} sub="across 3 species" to="/dashboard/species/cow" />
         <StatCard
           label="High risk now"
           value={HERD.filter((a) => a.risk === 'High Risk').length}
           sub="needs vet attention"
+          to="/dashboard/predictions"
         />
-        <StatCard label="Average risk score" value={`${avgRisk}%`} sub="herd-wide" />
-        <StatCard label="Gateway uptime" value="99.4%" sub="last 30 days" />
+        <StatCard label="Average risk score" value={`${avgRisk}%`} sub="herd-wide" to="/dashboard/analytics" />
+        <StatCard label="Gateway uptime" value="99.4%" sub="last 30 days" to="/dashboard/analytics" />
       </motion.div>
 
       {/* Live herd review strip */}

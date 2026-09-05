@@ -86,6 +86,5 @@ any scroll or rotation logic.
 
 ## Not yet built
 
-Auth (Login/Sign up currently just log to console — wire up your auth
-provider or backend), and live device connectivity (MQTT/WebSocket feed
-into `HERD` in place of the mock array).
+Auth (Login/Sign up are front-end prototype flows), and live device
+connectivity (MQTT/WebSocket feed into `HERD` in place of the mock array).
