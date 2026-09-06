@@ -9,20 +9,20 @@ export default function NeuralWeb({ className = 'neural-web' }) {
         className={className}
         options={{
           fullScreen: { enable: false },
-          fpsLimit: 60,
-          detectRetina: true,
+          fpsLimit: 30,
+          detectRetina: false,
           particles: {
           number: {
             density: { enable: true, area: 950 },
-            value: 58,
+            value: 36,
           },
           color: { value: ['#075985', '#0f766e', '#0369a1', '#0891b2'] },
           links: {
             enable: true,
             color: '#075985',
-            distance: 145,
-            opacity: 0.48,
-            width: 1.2,
+            distance: 125,
+            opacity: 0.36,
+            width: 1,
           },
           move: {
             enable: true,

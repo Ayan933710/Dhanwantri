@@ -1,11 +1,13 @@
 import { HISTORY_LOG, HERD } from '../../data/herd.js';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 export default function HistoryPage() {
+  const { t } = useLanguage();
   return (
     <div className="space-y-6">
       <div>
         <h2 className="font-display text-2xl text-milk">History</h2>
-        <p className="mt-1 text-sm text-milk-dim">A chronological log of herd events and alerts.</p>
+        <p className="mt-1 text-sm text-milk-dim">{t('historyDescription')}</p>
       </div>
 
       <ol className="relative space-y-6 border-l border-milk/10 pl-6">

@@ -159,15 +159,15 @@ export default function HerdOverviewPage() {
     <div className="space-y-10">
       <section className="dashboard-intro">
         <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-pasture">Today in the herd</p>
-          <h1 className="mt-2 font-display text-3xl text-milk md:text-4xl">A clearer day starts with an earlier signal.</h1>
+          <p className="text-xs uppercase tracking-[0.18em] text-pasture">{t('todayInHerd')}</p>
+          <h1 className="mt-2 font-display text-3xl text-milk md:text-4xl">{t('earlierSignal')}</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-milk-dim">
-            Live readings from every connected animal, distilled into the care decisions that matter now.
+            {t('liveReadings')}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-4">
           <button type="button" className="dashboard-primary-button" onClick={() => setIsModalOpen(true)}>
-            <Plus size={17} /> Add animal
+            <Plus size={17} /> {t('addAnimal')}
           </button>
           <div className="dashboard-intro-mark" aria-hidden="true">
             <span />
@@ -182,22 +182,22 @@ export default function HerdOverviewPage() {
         animate="visible"
         className="dashboard-stat-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
       >
-        <StatCard label="Herd size" value={animals.length} sub="across 3 species" to="/dashboard/species/cow" />
+        <StatCard label={t('herdSize')} value={animals.length} sub={t('acrossSpecies')} to="/dashboard/species/cow" />
         <StatCard
           label="High risk now"
             value={animals.filter((a) => a.risk === 'High Risk').length}
-          sub="needs vet attention"
+          sub={t('needsVet')}
           to="/dashboard/predictions"
         />
-        <StatCard label="Average risk score" value={`${avgRisk}%`} sub="herd-wide" to="/dashboard/analytics" />
-        <StatCard label="Gateway uptime" value="99.4%" sub="last 30 days" to="/dashboard/analytics" />
+        <StatCard label={t('averageRiskScore')} value={`${avgRisk}%`} sub={t('herdWide')} to="/dashboard/analytics" />
+        <StatCard label={t('gatewayUptime')} value="99.4%" sub={t('last30Days')} to="/dashboard/analytics" />
       </motion.div>
 
       {/* Live herd review strip */}
       <section className="dashboard-review-section rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="font-display text-xl text-milk">Live Herd Review</h2>
-          <span className="text-xs text-milk-dim">Updated moments ago</span>
+          <h2 className="font-display text-xl text-milk">{t('liveHerdReview')}</h2>
+          <span className="text-xs text-milk-dim">{t('updatedMoments')}</span>
         </div>
         <motion.div
           variants={cardGroupVariants}
@@ -220,7 +220,7 @@ export default function HerdOverviewPage() {
 
         {highRisk.length === 0 ? (
           <p className="rounded-xl border border-milk/10 bg-night-card/60 p-6 text-sm text-milk-dim">
-            No moderate or high risk animals right now.
+            {t('noRiskAnimals')}
           </p>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-milk/10">
@@ -253,7 +253,6 @@ export default function HerdOverviewPage() {
                         className="focus-ring text-xs font-medium text-sky-600 transition-colors hover:text-sky-700"
                       >
                         {t('view')} →
-                                              {t('view')} →
                       </Link>
                     </td>
                   </tr>

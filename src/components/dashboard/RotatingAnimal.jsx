@@ -9,7 +9,7 @@ export default function RotatingAnimal({ species, className = 'h-72 w-full' }) {
 
   return (
     <div className={className}>
-      <Canvas shadows camera={{ position: cameraPosition, fov: 42 }}>
+      <Canvas dpr={[1, 1.5]} shadows camera={{ position: cameraPosition, fov: 42 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[3, 4, 2]} intensity={1.5} color="#BAE6FD" castShadow />
@@ -17,7 +17,7 @@ export default function RotatingAnimal({ species, className = 'h-72 w-full' }) {
           <group position={[0, -0.06, 0]} scale={modelScale}>
             <AnimalModel species={species} focused />
           </group>
-          <ContactShadows position={[0, -0.06, 0]} opacity={0.5} scale={6} blur={2.2} />
+          <ContactShadows frames={1} position={[0, -0.06, 0]} opacity={0.5} scale={6} blur={2.2} />
           <OrbitControls
             target={[0, 0.85, 0]}
             autoRotate

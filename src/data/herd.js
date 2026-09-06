@@ -41,7 +41,7 @@ export const HERD = [
     rumination: -28,
     thi: 78,
     quarters: quarterSet('High Risk'),
-    trend: trend(14, true),
+    trend: trend(30, true),
   },
   {
     id: 'C-118',
@@ -55,7 +55,7 @@ export const HERD = [
     rumination: -12,
     thi: 71,
     quarters: quarterSet('Moderate Risk'),
-    trend: trend(14, true),
+    trend: trend(30, true),
   },
   {
     id: 'C-129',
@@ -69,7 +69,7 @@ export const HERD = [
     rumination: 2,
     thi: 62,
     quarters: quarterSet('No Risk'),
-    trend: trend(14, false),
+    trend: trend(30, false),
   },
   {
     id: 'B-021',
@@ -83,7 +83,7 @@ export const HERD = [
     rumination: -6,
     thi: 69,
     quarters: quarterSet('Low Risk'),
-    trend: trend(14, false),
+    trend: trend(30, false),
   },
   {
     id: 'B-034',
@@ -97,7 +97,7 @@ export const HERD = [
     rumination: 1,
     thi: 64,
     quarters: quarterSet('No Risk'),
-    trend: trend(14, false),
+    trend: trend(30, false),
   },
   {
     id: 'G-007',
@@ -111,7 +111,7 @@ export const HERD = [
     rumination: -15,
     thi: 66,
     quarters: quarterSet('Moderate Risk'),
-    trend: trend(14, true),
+    trend: trend(30, true),
   },
   {
     id: 'G-012',
@@ -125,7 +125,7 @@ export const HERD = [
     rumination: 0,
     thi: 60,
     quarters: quarterSet('No Risk'),
-    trend: trend(14, false),
+    trend: trend(30, false),
   },
 ];
 

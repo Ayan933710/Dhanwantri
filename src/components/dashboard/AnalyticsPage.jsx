@@ -17,6 +17,7 @@ import { motion } from 'framer-motion';
 import { HERD, RISK_LEVELS, riskColor } from '../../data/herd.js';
 import AnimatedChartTooltip, { AnimatedActiveDot } from '../shared/AnimatedChartTooltip.jsx';
 import InteractiveCard from '../shared/InteractiveCard.jsx';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 function riskDistribution() {
   return RISK_LEVELS.map((level) => ({
@@ -37,9 +38,9 @@ function speciesAverage() {
 }
 
 function herdThiTrend() {
-  // Synthetic 10-day shed heat-stress index trend for the demo.
-  return Array.from({ length: 10 }, (_, i) => ({
-    day: `D-${10 - i}`,
+  // Synthetic 30-day shed heat-stress index trend for the demo.
+  return Array.from({ length: 30 }, (_, i) => ({
+    day: `D-${i + 1}`,
     thi: 58 + Math.round(Math.sin(i / 2) * 6 + i * 1.2),
   }));
 }
@@ -51,6 +52,7 @@ const chartGroupVariants = {
 };
 
 export default function AnalyticsPage() {
+  const { t } = useLanguage();
   const dist = riskDistribution();
   const speciesAvg = speciesAverage();
   const thi = herdThiTrend();
@@ -59,7 +61,7 @@ export default function AnalyticsPage() {
     <div className="space-y-8">
       <div>
         <h2 className="font-display text-2xl text-theme-text-dark">Analytics</h2>
-        <p className="mt-1 text-sm text-theme-text-muted">Herd-wide trends across all connected devices.</p>
+        <p className="mt-1 text-sm text-theme-text-muted">{t('herdTrends')}</p>
       </div>
 
       <motion.div
@@ -69,7 +71,7 @@ export default function AnalyticsPage() {
         className="grid gap-6 lg:grid-cols-2"
       >
         <InteractiveCard className={`${CARD} min-w-0`}>
-          <p className="mb-4 font-display text-lg text-theme-text-dark">Risk distribution</p>
+          <p className="mb-4 font-display text-lg text-theme-text-dark">{t('riskDistribution')}</p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -98,7 +100,7 @@ export default function AnalyticsPage() {
         </InteractiveCard>
 
         <InteractiveCard className={`${CARD} min-w-0`}>
-          <p className="mb-4 font-display text-lg text-theme-text-dark">Average risk by species</p>
+          <p className="mb-4 font-display text-lg text-theme-text-dark">{t('averageRisk')}</p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={speciesAvg}>
@@ -115,7 +117,7 @@ export default function AnalyticsPage() {
         </InteractiveCard>
 
         <InteractiveCard className={`${CARD} min-w-0 lg:col-span-2`}>
-          <p className="mb-4 font-display text-lg text-theme-text-dark">Shed Temperature-Humidity Index (THI)</p>
+          <p className="mb-4 font-display text-lg text-theme-text-dark">{t('thi')}</p>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={thi}>

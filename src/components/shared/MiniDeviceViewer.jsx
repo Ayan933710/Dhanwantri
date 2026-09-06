@@ -113,7 +113,7 @@ export default function MiniDeviceViewer({ type, callouts = [] }) {
             </div>
           ))}
         </div>
-        <Canvas camera={{ position: [1.4, 0.8, 1.6], fov: 40 }}>
+        <Canvas dpr={[1, 1.5]} camera={{ position: [1.4, 0.8, 1.6], fov: 40 }}>
           <Suspense fallback={null}>
             <ambientLight intensity={0.7} />
             <directionalLight position={[2, 3, 2]} intensity={1.4} color="#BAE6FD" />
@@ -126,7 +126,7 @@ export default function MiniDeviceViewer({ type, callouts = [] }) {
                 ))}
               />
             </Bounds>
-            <ContactShadows position={[0, -0.5, 0]} opacity={0.5} scale={4} blur={2} />
+            <ContactShadows frames={1} position={[0, -0.5, 0]} opacity={0.5} scale={4} blur={2} />
             <OrbitControls
               autoRotate
               autoRotateSpeed={2.2}

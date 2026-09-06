@@ -42,7 +42,7 @@ export default function DashboardLayout() {
     <div className="relative flex min-h-screen isolate bg-theme-bg-main text-theme-text-dark">
       <AmbientBackground variant="dashboard" />
       <div className="dashboard-background-mesh" aria-hidden="true" />
-      <aside className="relative z-10 dashboard-sidebar hidden w-60 shrink-0 border-r border-slate-200 bg-theme-bg-card px-4 py-6 shadow-sm md:block">
+      <aside className="z-10 dashboard-sidebar sticky top-0 hidden h-screen w-60 shrink-0 self-start border-r border-slate-200 bg-theme-bg-card px-4 py-6 shadow-sm md:block">
         <div className="flex items-center gap-2 px-2">
           <span className="h-2.5 w-2.5 rounded-full bg-theme-primary" />
           <span className="font-display text-base text-theme-text-dark">
@@ -127,26 +127,22 @@ export default function DashboardLayout() {
           ))}
         </nav>
 
-        <div className="mt-10 rounded-lg border border-slate-200 bg-theme-bg-card p-3 shadow-sm">
-          <p className="text-[11px] text-theme-text-muted">
-            Prototype data — for demo purposes. Not a certified diagnostic
-            output.
-          </p>
-        </div>
       </aside>
 
       <div className="relative z-10 min-w-0 flex-1">
-        <header className="dashboard-topbar flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-theme-bg-card px-4 py-4 shadow-sm sm:px-6 md:px-8">
+        <header className="dashboard-topbar sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-theme-bg-card px-4 py-4 shadow-sm sm:px-6 md:px-8">
           <div className="min-w-0">
-            <p className="dashboard-kicker text-xs text-theme-text-muted">Kolar Village / milk cooperative</p>
-            <p className="truncate font-display text-lg text-theme-text-dark">Herd Health Console</p>
+            <p className="dashboard-kicker text-xs text-theme-text-muted">{t('cooperative')}</p>
+            <p className="truncate font-display text-lg text-theme-text-dark">{t('healthConsole')}</p>
           </div>
           <div className="dashboard-status flex shrink-0 items-center gap-2 text-xs text-theme-text-muted">
             <span className="h-2 w-2 rounded-full bg-theme-risk-none" />
-            Gateway online · 99.4% uptime
+            {t('gatewayOnline')}
           </div>
-          <ThemeToggle />
-          <LanguageSelect />
+          <div className="dashboard-header-controls flex items-center gap-3">
+            <ThemeToggle />
+            <LanguageSelect />
+          </div>
         </header>
 
         <nav className="dashboard-mobile-nav md:hidden" aria-label="Dashboard navigation">

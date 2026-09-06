@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { HERD } from '../../data/herd.js';
 import RiskBadge from './RiskBadge.jsx';
 import RotatingAnimal from './RotatingAnimal.jsx';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 const SPECIES_LABEL = { cow: 'Cows', buffalo: 'Buffaloes', goat: 'Goats' };
 
 export default function SpeciesListPage() {
+  const { t } = useLanguage();
   const { species } = useParams();
   const animals = HERD.filter((a) => a.species === species);
 
@@ -14,7 +16,7 @@ export default function SpeciesListPage() {
     <div>
       <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs text-milk-dim">Species</p>
+          <p className="text-xs text-milk-dim">{t('speciesLabel')}</p>
           <h2 className="font-display text-2xl text-milk">
             {SPECIES_LABEL[species] ?? species}
           </h2>
@@ -47,15 +49,15 @@ export default function SpeciesListPage() {
               </div>
               <dl className="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-milk-dim">
                 <div>
-                  <dt>Age</dt>
+                  <dt>{t('ageLabel')}</dt>
                   <dd className="mt-1 font-display text-sm text-milk">{a.age}y</dd>
                 </div>
                 <div>
-                  <dt>Lactation</dt>
+                  <dt>{t('lactation')}</dt>
                   <dd className="mt-1 font-display text-sm text-milk">#{a.lactation}</dd>
                 </div>
                 <div>
-                  <dt>Risk score</dt>
+                  <dt>{t('riskScore')}</dt>
                   <dd className="mt-1 font-display text-sm text-milk">{a.riskScore}%</dd>
                 </div>
               </dl>
@@ -64,7 +66,7 @@ export default function SpeciesListPage() {
         ))}
 
         {animals.length === 0 && (
-          <p className="text-sm text-milk-dim">No animals recorded for this species yet.</p>
+          <p className="text-sm text-milk-dim">{t('noAnimals')}</p>
         )}
       </div>
     </div>

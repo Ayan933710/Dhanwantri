@@ -87,11 +87,11 @@ export default function AnimalDetailPage() {
           </div>
 
           {recommendation && (
-            <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
-              <p className="text-xs font-medium text-amber-700">
+            <div className="recommendation-box mt-6 rounded-lg p-4">
+              <p className="recommendation-box-label text-xs font-medium">
                 Recommended action · {recommendation.profile}
               </p>
-              <p className="mt-1 text-sm text-milk">{recommendation.action}</p>
+              <p className="recommendation-box-action mt-1 text-sm">{recommendation.action}</p>
             </div>
           )}
         </div>
@@ -99,7 +99,7 @@ export default function AnimalDetailPage() {
 
       {/* Risk trend */}
       <div className="rounded-xl border border-milk/10 bg-night-card/60 p-5">
-        <p className="mb-4 font-display text-lg text-milk">14-day risk trend</p>
+        <p className="mb-4 font-display text-lg text-milk">30-day risk trend</p>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={animal.trend}>

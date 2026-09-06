@@ -234,8 +234,4 @@ export default function AnimalModel(props) {
   return <AssetAnimal {...props} />;
 }
 
-useGLTF.preload('/models/cow.glb');
-useGLTF.preload('/models/buffalo.glb');
-useGLTF.preload('/models/goat.glb');
-
 export { SPECIES_CONFIG };

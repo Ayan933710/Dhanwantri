@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
 import { RECOMMENDATIONS, HERD } from '../../data/herd.js';
 import RiskBadge from './RiskBadge.jsx';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 export default function PredictionsPage() {
+  const { t } = useLanguage();
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-display text-2xl text-milk">Predictions &amp; Recommendations</h2>
+        <h2 className="font-display text-2xl text-milk">{t('predictionTitle')}</h2>
         <p className="mt-1 text-sm text-milk-dim">
-          Explainable, animal-specific actions generated from the fused risk vector.
+          {t('predictionDescription')}
         </p>
       </div>
 
@@ -36,7 +38,7 @@ export default function PredictionsPage() {
                 to={`/dashboard/species/${animal.species}/${animal.id}`}
                 className="focus-ring mt-3 inline-block text-xs font-medium text-sky-600 transition-colors hover:text-sky-700"
               >
-                View full animal record →
+                {t('viewRecord')}
               </Link>
             </div>
           );
@@ -44,7 +46,7 @@ export default function PredictionsPage() {
 
         {RECOMMENDATIONS.length === 0 && (
           <p className="rounded-xl border border-milk/10 bg-night-card/60 p-6 text-sm text-milk-dim">
-            No active recommendations — herd is clear.
+            {t('noRecommendations')}
           </p>
         )}
       </div>
