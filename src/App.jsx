@@ -4,6 +4,8 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import HeroSection from './components/landing/HeroSection.jsx';
 import FooterSection from './components/landing/FooterSection.jsx';
 import AmbientBackground from './components/shared/AmbientBackground.jsx';
+import { ThemeProvider } from './hooks/useTheme.jsx';
+import { LanguageProvider } from './hooks/useLanguage.jsx';
 
 const FeaturesSection = lazy(() => import('./components/landing/FeaturesSection.jsx'));
 const AuthPage = lazy(() => import('./components/auth/AuthPage.jsx'));
@@ -47,31 +49,35 @@ export default function App() {
   const animationKey = ['/login', '/signup'].includes(location.pathname) ? '/auth' : location.pathname;
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={animationKey}
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -15 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
-      >
-        <Suspense fallback={<RouteLoading />}>
-          <Routes location={location}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<AuthPage />} />
-            <Route path="/signup" element={<AuthPage />} />
+    <LanguageProvider>
+      <ThemeProvider>
+        <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={animationKey}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+        >
+          <Suspense fallback={<RouteLoading />}>
+            <Routes location={location}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<AuthPage />} />
+              <Route path="/signup" element={<AuthPage />} />
 
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route index element={<HerdOverviewPage />} />
-              <Route path="species/:species" element={<SpeciesListPage />} />
-              <Route path="species/:species/:animalId" element={<AnimalDetailPage />} />
-              <Route path="analytics" element={<AnalyticsPage />} />
-              <Route path="predictions" element={<PredictionsPage />} />
-              <Route path="history" element={<HistoryPage />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </motion.div>
-    </AnimatePresence>
+              <Route path="/dashboard" element={<DashboardLayout />}>
+                <Route index element={<HerdOverviewPage />} />
+                <Route path="species/:species" element={<SpeciesListPage />} />
+                <Route path="species/:species/:animalId" element={<AnimalDetailPage />} />
+                <Route path="analytics" element={<AnalyticsPage />} />
+                <Route path="predictions" element={<PredictionsPage />} />
+                <Route path="history" element={<HistoryPage />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </motion.div>
+        </AnimatePresence>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }

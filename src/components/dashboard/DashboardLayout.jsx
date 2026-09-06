@@ -10,6 +10,9 @@ import {
   History,
 } from 'lucide-react';
 import AmbientBackground from '../shared/AmbientBackground.jsx';
+import ThemeToggle from '../shared/ThemeToggle.jsx';
+import LanguageSelect from '../shared/LanguageSelect.jsx';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Main Page', icon: Home, end: true },
@@ -26,6 +29,7 @@ const ANIMAL_ITEMS = [
 ];
 
 export default function DashboardLayout() {
+  const { t } = useLanguage();
   const { pathname } = useLocation();
   const animalsActive = pathname.startsWith('/dashboard/species/');
   const [animalsOpen, setAnimalsOpen] = useState(animalsActive);
@@ -61,7 +65,7 @@ export default function DashboardLayout() {
               }
             >
               <Icon size={16} />
-              {label}
+              {to === '/' ? t('mainPage') : t('herdOverview')}
             </NavLink>
           ))}
 
@@ -76,7 +80,7 @@ export default function DashboardLayout() {
             >
               <span className="flex items-center gap-3">
                 <PawPrint size={16} />
-                <span>Animals</span>
+                <span>{t('animals')}</span>
               </span>
               <ChevronDown
                 size={15}
@@ -118,7 +122,7 @@ export default function DashboardLayout() {
               }
             >
               <Icon size={16} />
-              {label}
+              {to.endsWith('analytics') ? t('analytics') : to.endsWith('predictions') ? t('predictions') : t('history')}
             </NavLink>
           ))}
         </nav>
@@ -141,6 +145,8 @@ export default function DashboardLayout() {
             <span className="h-2 w-2 rounded-full bg-theme-risk-none" />
             Gateway online · 99.4% uptime
           </div>
+          <ThemeToggle />
+          <LanguageSelect />
         </header>
 
         <nav className="dashboard-mobile-nav md:hidden" aria-label="Dashboard navigation">

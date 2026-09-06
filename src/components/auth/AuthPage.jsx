@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, Check, Eye, EyeOff, Leaf, LockKeyhole, Mail, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import ThemeToggle from '../shared/ThemeToggle.jsx';
+import LanguageSelect from '../shared/LanguageSelect.jsx';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 const panelCopy = {
     login: {
@@ -25,6 +28,7 @@ const panelCopy = {
 };
 
 export default function AuthPage() {
+  const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const routeMode = location.pathname === '/signup' ? 'signup' : 'login';
@@ -33,6 +37,7 @@ export default function AuthPage() {
   const copy = panelCopy[mode];
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [identifierMode, setIdentifierMode] = useState('phone');
 
   useEffect(() => {
     setActiveMode(routeMode);
@@ -60,7 +65,11 @@ export default function AuthPage() {
           <span className="brand-mark"><span /></span>
           <span className="font-display text-lg tracking-tight">DairyGuard <b>AI</b></span>
         </Link>
-        <Link to="/" className="auth-home-link">Back to home <ArrowRight size={15} /></Link>
+        <div className="flex items-center gap-4">
+          <LanguageSelect />
+          <ThemeToggle />
+          <Link to="/" className="auth-home-link">Back to home <ArrowRight size={15} /></Link>
+        </div>
       </header>
 
       <div className="auth-center auth-center-card">
@@ -82,11 +91,18 @@ export default function AuthPage() {
             <motion.div key={mode} initial={{ opacity: 0, x: mode === 'login' ? -18 : 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: mode === 'login' ? 18 : -18 }} transition={{ duration: .28, ease: 'easeOut' }}>
             <div className="auth-form-heading"><span>{copy.formTitle}</span><i /></div>
             <form className="auth-form" onSubmit={handleSubmit}>
-              {mode === 'signup' && <label><span>Full name</span><div className="auth-input-wrap"><Leaf size={16} /><input name="name" type="text" placeholder="Your name" required /></div></label>}
-              <label><span>Work email</span><div className="auth-input-wrap"><Mail size={16} /><input name="email" type="email" placeholder="you@farm.co" required /></div></label>
-              <label><span>Password</span><div className="auth-input-wrap"><LockKeyhole size={16} /><input name="password" type={showPassword ? 'text' : 'password'} placeholder="At least 8 characters" minLength="8" required /><button type="button" className="auth-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></label>
+              {mode === 'signup' && <label><span>{t('fullName')}</span><div className="auth-input-wrap"><Leaf size={16} /><input name="name" type="text" placeholder="Your name" required /></div></label>}
+              <fieldset className="auth-identifier-group">
+                <legend>{t('identifier')}</legend>
+                <div className="auth-identifier-tabs">
+                  <button type="button" className={identifierMode === 'phone' ? 'is-active' : ''} onClick={() => setIdentifierMode('phone')}>{t('phone')}</button>
+                  <button type="button" className={identifierMode === 'uniqueId' ? 'is-active' : ''} onClick={() => setIdentifierMode('uniqueId')}>{t('uniqueId')}</button>
+                </div>
+              </fieldset>
+              <label><span>{identifierMode === 'phone' ? t('phone') : t('uniqueId')}</span><div className="auth-input-wrap"><Mail size={16} /><input name="identifier" type={identifierMode === 'phone' ? 'tel' : 'text'} inputMode={identifierMode === 'phone' ? 'tel' : 'text'} placeholder={identifierMode === 'phone' ? t('identifierPlaceholder') : t('uniqueIdPlaceholder')} required /></div></label>
+              <label><span>{t('password')}</span><div className="auth-input-wrap"><LockKeyhole size={16} /><input name="password" type={showPassword ? 'text' : 'password'} placeholder="At least 8 characters" minLength="8" required /><button type="button" className="auth-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></label>
               {mode === 'login' ? <div className="auth-form-meta"><label className="auth-check"><input type="checkbox" /> <span>Remember me</span></label><button type="button" className="auth-text-button">Forgot password?</button></div> : <p className="auth-terms">By continuing, you agree to the DairyGuard workspace terms and privacy policy.</p>}
-              <button type="submit" className="auth-submit">{copy.action} <ArrowRight size={17} /></button>
+              <button type="submit" className="auth-submit">{mode === 'login' ? t('signIn') : t('createAccount')} <ArrowRight size={17} /></button>
             </form>
             </motion.div>
           )}

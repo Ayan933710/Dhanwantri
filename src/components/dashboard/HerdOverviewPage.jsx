@@ -1,8 +1,11 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Plus, X } from 'lucide-react';
 import { HERD, riskColor } from '../../data/herd.js';
 import RiskBadge from './RiskBadge.jsx';
 import InteractiveCard from '../shared/InteractiveCard.jsx';
+import { useLanguage } from '../../hooks/useLanguage.jsx';
 
 const cardGroupVariants = {
   hidden: {},
@@ -57,11 +60,100 @@ function HerdCard({ animal }) {
   );
 }
 
+const EMPTY_FORM = {
+  species: 'cow',
+  name: '',
+  id: '',
+  breed: '',
+  age: '',
+  ownerId: '',
+};
+
+function ManualAnimalModal({ onClose, onAdd, existingIds }) {
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [error, setError] = useState('');
+  const { t } = useLanguage();
+
+  function updateField(event) {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (existingIds.includes(form.id.trim().toLowerCase())) {
+      setError(t('duplicateId'));
+      return;
+    }
+    onAdd({
+      ...form,
+      name: form.name.trim(),
+      id: form.id.trim().toUpperCase(),
+      breed: form.breed.trim(),
+      age: Number(form.age),
+      risk: 'No Risk',
+      riskScore: 0,
+      rumination: 0,
+      thi: 0,
+      quarters: [],
+      trend: [],
+    });
+  }
+
+  return (
+    <div className="dashboard-modal-backdrop" role="presentation" onMouseDown={onClose}>
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="manual-animal-title"
+        className="dashboard-modal"
+        initial={{ opacity: 0, y: 18, scale: .97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.16em] text-pasture">{t('newHerdRecord')}</p>
+            <h2 id="manual-animal-title" className="mt-1 font-display text-2xl text-milk">{t('addAnimal')}</h2>
+            <p className="mt-2 text-sm text-milk-dim">Enter the profile details to place this animal in your live herd view.</p>
+          </div>
+          <button type="button" className="icon-button" onClick={onClose} aria-label="Close add animal dialog">
+            <X size={18} />
+          </button>
+        </div>
+
+        <form className="dashboard-animal-form" onSubmit={handleSubmit}>
+          <label><span>{t('animalType')}</span><select name="species" value={form.species} onChange={updateField}><option value="cow">Cow</option><option value="buffalo">Buffalo</option><option value="goat">Goat</option></select></label>
+          <label><span>{t('name')}</span><input name="name" value={form.name} onChange={updateField} placeholder="e.g. Ganga" required /></label>
+          <label><span>{t('animalId')}</span><input name="id" value={form.id} onChange={updateField} placeholder="e.g. C-142" required /></label>
+          <label><span>{t('breed')}</span><input name="breed" value={form.breed} onChange={updateField} placeholder="e.g. Sahiwal Cross" required /></label>
+          <label><span>{t('age')}</span><input name="age" type="number" min="0" max="30" value={form.age} onChange={updateField} required /></label>
+          <label><span>{t('ownerId')}</span><input name="ownerId" value={form.ownerId} onChange={updateField} placeholder="e.g. OWN-204" required /></label>
+          {error && <p className="dashboard-form-error" role="alert">{error}</p>}
+          <div className="flex justify-end gap-3 pt-2">
+            <button type="button" className="dashboard-secondary-button" onClick={onClose}>{t('cancel')}</button>
+            <button type="submit" className="dashboard-primary-button"><Plus size={16} /> {t('addToHerd')}</button>
+          </div>
+        </form>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function HerdOverviewPage() {
-  const highRisk = HERD.filter((a) => a.risk === 'High Risk' || a.risk === 'Moderate Risk').sort(
+    const { t } = useLanguage();
+  const [addedAnimals, setAddedAnimals] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const animals = [...HERD, ...addedAnimals];
+  const highRisk = animals.filter((a) => a.risk === 'High Risk' || a.risk === 'Moderate Risk').sort(
     (a, b) => b.riskScore - a.riskScore
   );
-  const avgRisk = Math.round(HERD.reduce((s, a) => s + a.riskScore, 0) / HERD.length);
+  const avgRisk = Math.round(animals.reduce((s, a) => s + a.riskScore, 0) / animals.length);
+
+  function addAnimal(animal) {
+    setAddedAnimals((current) => [...current, animal]);
+    setIsModalOpen(false);
+  }
 
   return (
     <div className="space-y-10">
@@ -73,22 +165,27 @@ export default function HerdOverviewPage() {
             Live readings from every connected animal, distilled into the care decisions that matter now.
           </p>
         </div>
-        <div className="dashboard-intro-mark" aria-hidden="true">
-          <span />
-          <span />
-          <span />
+        <div className="flex flex-wrap items-center gap-4">
+          <button type="button" className="dashboard-primary-button" onClick={() => setIsModalOpen(true)}>
+            <Plus size={17} /> Add animal
+          </button>
+          <div className="dashboard-intro-mark" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
       </section>
       <motion.div
         variants={cardGroupVariants}
         initial="hidden"
         animate="visible"
-        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        className="dashboard-stat-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
       >
-        <StatCard label="Herd size" value={HERD.length} sub="across 3 species" to="/dashboard/species/cow" />
+        <StatCard label="Herd size" value={animals.length} sub="across 3 species" to="/dashboard/species/cow" />
         <StatCard
           label="High risk now"
-          value={HERD.filter((a) => a.risk === 'High Risk').length}
+            value={animals.filter((a) => a.risk === 'High Risk').length}
           sub="needs vet attention"
           to="/dashboard/predictions"
         />
@@ -97,7 +194,7 @@ export default function HerdOverviewPage() {
       </motion.div>
 
       {/* Live herd review strip */}
-      <section>
+      <section className="dashboard-review-section rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-display text-xl text-milk">Live Herd Review</h2>
           <span className="text-xs text-milk-dim">Updated moments ago</span>
@@ -108,17 +205,17 @@ export default function HerdOverviewPage() {
           animate="visible"
           className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {HERD.map((animal) => (
+          {animals.map((animal) => (
             <HerdCard key={animal.id} animal={animal} />
           ))}
         </motion.div>
       </section>
 
       {/* High risk board */}
-      <section>
+      <section className="dashboard-risk-section rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-xl text-milk">High Risk Board</h2>
-          <span className="text-xs text-milk-dim">{highRisk.length} animals flagged</span>
+          <h2 className="font-display text-xl text-milk">{t('highRiskBoard')}</h2>
+          <span className="text-xs text-milk-dim">{highRisk.length} {t('animalsFlagged')}</span>
         </div>
 
         {highRisk.length === 0 ? (
@@ -128,13 +225,13 @@ export default function HerdOverviewPage() {
         ) : (
           <div className="overflow-x-auto rounded-xl border border-milk/10">
             <table className="min-w-[680px] w-full text-left text-sm">
-              <thead className="bg-night-card/80 text-xs uppercase tracking-wide text-milk-dim">
+              <thead className="high-risk-table-head text-xs uppercase tracking-wide text-milk-dim">
                 <tr>
-                  <th className="px-4 py-3 font-medium">Animal</th>
-                  <th className="px-4 py-3 font-medium">Species</th>
-                  <th className="px-4 py-3 font-medium">Risk</th>
-                  <th className="px-4 py-3 font-medium">Score</th>
-                  <th className="px-4 py-3 font-medium">Rumination Δ</th>
+                  <th className="px-4 py-3 font-medium">{t('animal')}</th>
+                  <th className="px-4 py-3 font-medium">{t('species')}</th>
+                  <th className="px-4 py-3 font-medium">{t('risk')}</th>
+                  <th className="px-4 py-3 font-medium">{t('score')}</th>
+                  <th className="px-4 py-3 font-medium">{t('rumination')}</th>
                   <th className="px-4 py-3 font-medium" />
                 </tr>
               </thead>
@@ -155,7 +252,8 @@ export default function HerdOverviewPage() {
                         to={`/dashboard/species/${a.species}/${a.id}`}
                         className="focus-ring text-xs font-medium text-sky-600 transition-colors hover:text-sky-700"
                       >
-                        View →
+                        {t('view')} →
+                                              {t('view')} →
                       </Link>
                     </td>
                   </tr>
@@ -165,6 +263,15 @@ export default function HerdOverviewPage() {
           </div>
         )}
       </section>
+      <AnimatePresence>
+        {isModalOpen && (
+          <ManualAnimalModal
+            onClose={() => setIsModalOpen(false)}
+            onAdd={addAnimal}
+            existingIds={animals.map((animal) => animal.id.toLowerCase())}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
